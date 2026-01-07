@@ -204,9 +204,65 @@ jj git push --all --deleted
 jj git push -b feature/dark-mode-css
 ```
 
+### Creating PRs with gh CLI
+```bash
+# Create PR for current bookmark
+gh pr create --title "PR1: Add dark mode CSS variables" --body "First PR in the stack"
+
+# Create PR with specific base (for stacked PRs)
+gh pr create --base feature/dark-mode-css --title "PR2: Add dark mode toggle"
+```
+
 ---
 
-## Section 6: The Undo Safety Net
+## Section 6: Git Town Action - Visualizing Stacked PRs
+
+This repo includes the [git-town/action](https://github.com/git-town/action) GitHub Action that automatically visualizes your PR stack.
+
+### What it does:
+- Adds a visual diagram to your PR description showing the stack
+- Shows where the current PR sits in the stack
+- Provides navigation links between related PRs
+
+### How it works:
+The workflow in `.github/workflows/git-town.yml` runs on every PR:
+
+```yaml
+name: Git Town
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  git-town:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: git-town/action@v1
+        with:
+          skip-single-stacks: true
+```
+
+### Configuration options:
+- `skip-single-stacks: true` - Only shows visualization for actual stacks (2+ PRs)
+- `location: comment` - Put visualization in a comment instead of PR description
+- `history-limit: 100` - Limit PR history fetch for large repos
+
+### Example visualization:
+When you have stacked PRs, you'll see something like:
+```
+PR Stack:
+  └── #3 PR3: Persist dark mode preference  ← You are here
+      └── #2 PR2: Add dark mode toggle button
+          └── #1 PR1: Add dark mode CSS variables
+              └── main
+```
+
+---
+
+## Section 7: The Undo Safety Net
 
 ### Made a mistake? No problem!
 ```bash
@@ -228,7 +284,7 @@ jj op restore <operation-id>
 
 ---
 
-## Section 7: Squashing Changes
+## Section 8: Squashing Changes
 
 ### Squash current change into parent
 ```bash

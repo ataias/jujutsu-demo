@@ -1,0 +1,15 @@
+name: Git Town
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  git-town:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: git-town/action@v1
+        with:
+          skip-single-stacks: true
