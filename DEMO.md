@@ -328,6 +328,37 @@ jj squash --interactive
 
 ---
 
+## Related Tools
+
+### jj-spr (Super Pull Requests)
+
+[jj-spr](https://github.com/LucioFranco/jj-spr) is a CLI tool that integrates Jujutsu with GitHub PRs more deeply.
+
+**The problem it solves:**
+Jujutsu encourages amending changes freely, but GitHub's review interface breaks when you force-push (reviewers lose context, diff history becomes confusing).
+
+**How it works:**
+- Maintains an "append-only PR branch" on GitHub
+- You amend locally with `jj squash`, `jj describe`, etc.
+- Updates create new commits on GitHub, preserving review context
+- Everything squashes into one clean commit when merged
+
+**Key commands:**
+```bash
+jj spr diff   # Create/update PRs
+jj spr land   # Merge approved PRs
+jj spr list   # View open PRs
+jj spr close  # Close a PR
+```
+
+**Features:**
+- Clean incremental diffs for reviewers
+- Stacked PR support with automatic handling
+- Land PRs in any order (cherry-pick mode)
+- Change IDs survive rebases
+
+---
+
 ## Demo Reset
 
 To reset the demo to initial state:
